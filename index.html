@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Ledger — Calorie Deficit Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Personal Ledger — Weekdays Mon&ndash;Fri</p>
+    <h1>Calorie Deficit</h1>
+    <p class="sub">Enter what you ate and what you burned. The balance settles itself.</p>
+  </header>
+
+  <main class="ledger" id="ledger">
+    <div class="ledger-head">
+      <span class="col col-day">Day</span>
+      <span class="col col-num">Eaten</span>
+      <span class="col col-num">Burned</span>
+      <span class="col col-num">Balance</span>
+    </div>
+
+    <div class="ledger-body" id="ledgerBody">
+      <!-- rows injected by app.js -->
+    </div>
+
+    <div class="ledger-foot">
+      <span class="col col-day">Week total</span>
+      <span class="col col-num" id="totalEaten">0</span>
+      <span class="col col-num" id="totalBurned">0</span>
+      <span class="col col-num balance" id="totalBalance">0</span>
+    </div>
+  </main>
+
+  <section class="summary">
+    <div class="stamp" id="stamp">
+      <div class="stamp-ring">
+        <span class="stamp-value" id="fatValue">0.00</span>
+        <span class="stamp-unit">lb</span>
+      </div>
+      <p class="stamp-label" id="stampLabel">estimated change this week</p>
+    </div>
+
+    <div class="summary-notes">
+      <p><strong>Balance</strong> = calories eaten &minus; calories burned, per day.</p>
+      <p><strong>Estimated change</strong> = week's total balance &divide; 3500. A negative balance points toward fat lost; a positive one points toward fat gained.</p>
+      <button id="resetWeek" class="reset-btn" type="button">Clear this week</button>
+    </div>
+  </section>
+
+  <footer class="foot-note">
+    <span id="weekRange"></span>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
