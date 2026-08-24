@@ -18,6 +18,15 @@
     <p class="sub">Enter what you ate and what you burned. The balance settles itself.</p>
   </header>
 
+  <div class="week-nav">
+    <button id="prevWeek" class="nav-btn" aria-label="Previous week" type="button">&lsaquo;</button>
+    <div class="week-nav-center">
+      <span class="week-label" id="weekRange"></span>
+      <button id="jumpToday" class="jump-btn" type="button" hidden>Back to this week</button>
+    </div>
+    <button id="nextWeek" class="nav-btn" aria-label="Next week" type="button">&rsaquo;</button>
+  </div>
+
   <main class="ledger" id="ledger">
     <div class="ledger-head">
       <span class="col col-day">Day</span>
@@ -38,6 +47,17 @@
     </div>
   </main>
 
+  <section class="weighin">
+    <div class="weighin-text">
+      <label for="weightInput">Weigh-in for this week</label>
+      <p class="weighin-hint">Log it once, any day this week — Monday morning is the usual habit.</p>
+    </div>
+    <div class="weighin-row">
+      <input type="number" id="weightInput" inputmode="decimal" step="0.1" min="0" placeholder="0.0">
+      <span class="unit">lb</span>
+    </div>
+  </section>
+
   <section class="summary">
     <div class="stamp" id="stamp">
       <div class="stamp-ring">
@@ -54,9 +74,12 @@
     </div>
   </section>
 
-  <footer class="foot-note">
-    <span id="weekRange"></span>
-  </footer>
+  <section class="trend">
+    <h2>Weight Trend</h2>
+    <div id="chartContainer" class="chart-container">
+      <!-- chart injected by app.js -->
+    </div>
+  </section>
 
 </div>
 
