@@ -79,9 +79,10 @@ body {
 
 .ledger-head, .ledger-foot, .row {
   display: grid;
-  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  grid-template-columns: 1.15fr 0.85fr 0.85fr 0.85fr 0.85fr;
   align-items: center;
   padding: 14px 20px;
+  gap: 6px;
 }
 
 .ledger-head {
@@ -285,10 +286,11 @@ body {
 
 @media (max-width: 560px) {
   .ledger-head, .ledger-foot, .row {
-    grid-template-columns: 1fr 0.8fr 0.8fr 0.9fr;
-    padding: 12px 14px;
-    gap: 6px;
+    grid-template-columns: 1fr 0.7fr 0.7fr 0.8fr 0.8fr;
+    padding: 12px 10px;
+    gap: 4px;
   }
+  .row input, .ledger-foot { font-size: 0.85rem; }
   .masthead h1 { font-size: 2.1rem; }
   .summary { justify-content: center; }
 }
@@ -359,65 +361,6 @@ body {
   cursor: default;
 }
 
-/* ---------- Weigh-in ---------- */
-
-.weighin {
-  margin-top: 20px;
-  padding: 18px 20px;
-  background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.weighin-text label {
-  font-family: 'Fraunces', serif;
-  font-weight: 500;
-  font-size: 1rem;
-  display: block;
-}
-
-.weighin-hint {
-  color: var(--paper-dim);
-  font-size: 0.8rem;
-  margin: 4px 0 0;
-}
-
-.weighin-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.weighin-row input {
-  width: 90px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid var(--hairline);
-  text-align: right;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.3rem;
-  color: var(--paper);
-  padding: 4px 0;
-}
-
-.weighin-row input:focus {
-  outline: none;
-  border-bottom: 1px solid var(--brass);
-}
-
-.weighin-row .unit {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--paper-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
 /* ---------- Trend chart ---------- */
 
 .trend {
@@ -428,6 +371,12 @@ body {
   font-family: 'Fraunces', serif;
   font-weight: 600;
   font-size: 1.2rem;
+  margin: 0 0 4px;
+}
+
+.trend-sub {
+  color: var(--paper-dim);
+  font-size: 0.8rem;
   margin: 0 0 14px;
 }
 
