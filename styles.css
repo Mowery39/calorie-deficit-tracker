@@ -706,3 +706,121 @@ body {
   .book-row { flex-direction: column; align-items: flex-start; }
   .book-row-actions { align-self: stretch; }
 }
+
+/* ---------- Budget: select input ---------- */
+
+.book-form select {
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  color: var(--paper);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.86rem;
+  padding: 9px 12px;
+  flex: 1 1 180px;
+}
+
+.book-form select:focus {
+  outline: none;
+  border-color: var(--brass);
+}
+
+#rulesHint {
+  line-height: 1.6;
+}
+
+/* ---------- Budget: stat grids (totals + per-paycheck breakdown) ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.stat-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.amt-good { color: var(--loss); }
+.amt-bad { color: var(--gain); }
+
+/* ---------- Budget: paycheck history rows ---------- */
+
+.paycheck-row {
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.paycheck-row:last-child {
+  border-bottom: none;
+}
+
+.paycheck-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.paycheck-type-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass);
+  border: 1px solid var(--brass-dim);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-right: 10px;
+}
+
+.paycheck-date {
+  color: var(--paper-dim);
+  font-size: 0.8rem;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.paycheck-head-left {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.paycheck-head-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.paycheck-amount {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+@media (max-width: 560px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 16px;
+  }
+}

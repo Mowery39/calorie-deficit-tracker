@@ -16,6 +16,11 @@
       eyebrow: 'Personal Ledger \u2014 Reading List',
       title: 'Reading',
       sub: 'Track what you\u2019re reading, what\u2019s next, and what you\u2019ve finished.'
+    },
+    budget: {
+      eyebrow: 'Personal Ledger \u2014 Budgeting',
+      title: 'Budget',
+      sub: 'Log each paycheck and it splits itself the same way every time.'
     }
   };
 
