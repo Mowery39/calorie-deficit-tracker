@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Weekly Ledger — Calorie Deficit Tracker</title>
+<title>Personal Ledger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -13,69 +13,149 @@
 <div class="page">
 
   <header class="masthead">
-    <p class="eyebrow">Personal Ledger — Weekdays Mon&ndash;Fri</p>
-    <h1>Calorie Deficit</h1>
-    <p class="sub">Enter what you ate, what you burned, and today's weight. The balance settles itself.</p>
+    <p class="eyebrow" id="pageEyebrow">Personal Ledger — Weekdays Mon&ndash;Fri</p>
+    <h1 id="pageTitle">Calorie Deficit</h1>
+    <p class="sub" id="pageSub">Enter what you ate, what you burned, and today's weight. The balance settles itself.</p>
   </header>
 
-  <div class="week-nav">
-    <button id="prevWeek" class="nav-btn" aria-label="Previous week" type="button">&lsaquo;</button>
-    <div class="week-nav-center">
-      <span class="week-label" id="weekRange"></span>
-      <button id="jumpToday" class="jump-btn" type="button" hidden>Back to this week</button>
-    </div>
-    <button id="nextWeek" class="nav-btn" aria-label="Next week" type="button">&rsaquo;</button>
-  </div>
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="calories" type="button">Calories</button>
+    <button class="tab-btn" data-tab="reading" type="button">Reading</button>
+  </nav>
 
-  <main class="ledger" id="ledger">
-    <div class="ledger-head">
-      <span class="col col-day">Day</span>
-      <span class="col col-num">Eaten</span>
-      <span class="col col-num">Burned</span>
-      <span class="col col-num">Balance</span>
-      <span class="col col-num">Weight</span>
-    </div>
+  <!-- ============ CALORIES TAB ============ -->
+  <section id="page-calories" class="tab-page active">
 
-    <div class="ledger-body" id="ledgerBody">
-      <!-- rows injected by app.js -->
-    </div>
-
-    <div class="ledger-foot">
-      <span class="col col-day">Week total</span>
-      <span class="col col-num" id="totalEaten">0</span>
-      <span class="col col-num" id="totalBurned">0</span>
-      <span class="col col-num balance" id="totalBalance">0</span>
-      <span class="col col-num" id="avgWeight">&mdash;</span>
-    </div>
-  </main>
-
-  <section class="summary">
-    <div class="stamp" id="stamp">
-      <div class="stamp-ring">
-        <span class="stamp-value" id="fatValue">0.00</span>
-        <span class="stamp-unit">lb</span>
+    <div class="week-nav">
+      <button id="prevWeek" class="nav-btn" aria-label="Previous week" type="button">&lsaquo;</button>
+      <div class="week-nav-center">
+        <span class="week-label" id="weekRange"></span>
+        <button id="jumpToday" class="jump-btn" type="button" hidden>Back to this week</button>
       </div>
-      <p class="stamp-label" id="stampLabel">estimated change this week</p>
+      <button id="nextWeek" class="nav-btn" aria-label="Next week" type="button">&rsaquo;</button>
     </div>
 
-    <div class="summary-notes">
-      <p><strong>Balance</strong> = calories eaten &minus; calories burned, per day.</p>
-      <p><strong>Estimated change</strong> = week's total balance &divide; 3500. A negative balance points toward fat lost; a positive one points toward fat gained.</p>
-      <p><strong>Weight</strong> is logged daily and averaged across however many days you enter — daily numbers bounce around, the average doesn't.</p>
-      <button id="resetWeek" class="reset-btn" type="button">Clear this week</button>
-    </div>
+    <main class="ledger" id="ledger">
+      <div class="ledger-head">
+        <span class="col col-day">Day</span>
+        <span class="col col-num">Eaten</span>
+        <span class="col col-num">Burned</span>
+        <span class="col col-num">Balance</span>
+        <span class="col col-num">Weight</span>
+      </div>
+
+      <div class="ledger-body" id="ledgerBody">
+        <!-- rows injected by app.js -->
+      </div>
+
+      <div class="ledger-foot">
+        <span class="col col-day">Week total</span>
+        <span class="col col-num" id="totalEaten">0</span>
+        <span class="col col-num" id="totalBurned">0</span>
+        <span class="col col-num balance" id="totalBalance">0</span>
+        <span class="col col-num" id="avgWeight">&mdash;</span>
+      </div>
+    </main>
+
+    <section class="summary">
+      <div class="stamp" id="stamp">
+        <div class="stamp-ring">
+          <span class="stamp-value" id="fatValue">0.00</span>
+          <span class="stamp-unit">lb</span>
+        </div>
+        <p class="stamp-label" id="stampLabel">estimated change this week</p>
+      </div>
+
+      <div class="summary-notes">
+        <p><strong>Balance</strong> = calories eaten &minus; calories burned, per day.</p>
+        <p><strong>Estimated change</strong> = week's total balance &divide; 3500. A negative balance points toward fat lost; a positive one points toward fat gained.</p>
+        <p><strong>Weight</strong> is logged daily and averaged across however many days you enter &mdash; daily numbers bounce around, the average doesn't.</p>
+        <button id="resetWeek" class="reset-btn" type="button">Clear this week</button>
+      </div>
+    </section>
+
+    <section class="trend">
+      <h2>Weight Trend</h2>
+      <p class="trend-sub">One point per week, plotted from that week's average weight.</p>
+      <div id="chartContainer" class="chart-container">
+        <!-- chart injected by app.js -->
+      </div>
+    </section>
+
   </section>
 
-  <section class="trend">
-    <h2>Weight Trend</h2>
-    <p class="trend-sub">One point per week, plotted from that week's average weight.</p>
-    <div id="chartContainer" class="chart-container">
-      <!-- chart injected by app.js -->
+  <!-- ============ READING TAB ============ -->
+  <section id="page-reading" class="tab-page">
+
+    <div class="book-card">
+      <h2 class="book-card-heading">Currently Reading</h2>
+
+      <div id="noCurrentBook">
+        <p class="chart-empty">Not reading anything right now.</p>
+        <form id="startBookForm" class="book-form">
+          <input type="text" id="startTitle" placeholder="Title" required>
+          <input type="text" id="startAuthor" placeholder="Author (optional)">
+          <input type="number" id="startPages" placeholder="Total pages" min="1" required>
+          <button type="submit" class="add-btn">Start reading</button>
+        </form>
+      </div>
+
+      <div id="hasCurrentBook" hidden>
+        <div class="current-book-info">
+          <p class="current-title" id="curTitle"></p>
+          <p class="current-author" id="curAuthor"></p>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="progress-inputs">
+          <input type="number" id="curPage" min="0" placeholder="Page">
+          <span class="of-text">of <span id="curTotalPages"></span></span>
+        </div>
+
+        <p class="chart-stat" id="paceStat"></p>
+
+        <div class="book-actions">
+          <button id="finishBookBtn" class="add-btn" type="button">Mark finished</button>
+          <button id="dropBookBtn" class="reset-btn" type="button">Remove</button>
+        </div>
+      </div>
     </div>
+
+    <div class="book-section">
+      <h2>Up Next</h2>
+      <div class="book-list" id="queueList"></div>
+      <p class="chart-empty" id="queueEmpty" hidden>Nothing queued yet &mdash; add what you want to read next.</p>
+      <form id="queueForm" class="book-form">
+        <input type="text" id="queueTitle" placeholder="Title" required>
+        <input type="text" id="queueAuthor" placeholder="Author (optional)">
+        <input type="number" id="queuePages" placeholder="Pages (optional)" min="1">
+        <button type="submit" class="add-btn">Add to queue</button>
+      </form>
+    </div>
+
+    <div class="book-section">
+      <h2>Finished</h2>
+      <div class="book-list" id="finishedList"></div>
+      <p class="chart-empty" id="finishedEmpty" hidden>Nothing logged yet.</p>
+
+      <button id="logPastBookBtn" class="reset-btn" type="button">+ Log a book you've already read</button>
+
+      <form id="logPastForm" class="book-form" hidden>
+        <input type="text" id="pastTitle" placeholder="Title" required>
+        <input type="text" id="pastAuthor" placeholder="Author (optional)">
+        <input type="date" id="pastDate">
+        <button type="submit" class="add-btn">Add</button>
+      </form>
+    </div>
+
   </section>
 
 </div>
 
 <script src="app.js"></script>
+<script src="reading.js"></script>
 </body>
 </html>

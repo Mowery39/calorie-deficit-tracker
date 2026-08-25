@@ -443,3 +443,266 @@ body {
   margin-top: 6px;
   letter-spacing: 0.04em;
 }
+
+/* ---------- Tab navigation ---------- */
+
+.tab-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid var(--hairline);
+  color: var(--paper-dim);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 8px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--paper);
+  border-color: var(--brass-dim);
+}
+
+.tab-btn.active {
+  color: var(--ink);
+  background: var(--brass);
+  border-color: var(--brass);
+}
+
+.tab-page {
+  display: none;
+}
+
+.tab-page.active {
+  display: block;
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Reading: shared card shell ---------- */
+
+.book-card, .book-section {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 24px;
+}
+
+.book-card-heading, .book-section h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 0 16px;
+}
+
+/* ---------- Reading: forms ---------- */
+
+.book-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.book-form input {
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  color: var(--paper);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.86rem;
+  padding: 9px 12px;
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.book-form input:focus {
+  outline: none;
+  border-color: var(--brass);
+}
+
+.book-form input[type="number"] {
+  flex: 0 1 130px;
+}
+
+.book-form input[type="date"] {
+  flex: 0 1 160px;
+  color-scheme: dark;
+}
+
+.add-btn {
+  background: var(--brass);
+  border: 1px solid var(--brass);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 9px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+  white-space: nowrap;
+}
+
+.add-btn:hover { filter: brightness(1.08); }
+
+/* ---------- Reading: currently reading ---------- */
+
+.current-book-info {
+  margin-bottom: 16px;
+}
+
+.current-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.current-author {
+  color: var(--paper-dim);
+  font-size: 0.85rem;
+  margin: 4px 0 0;
+}
+
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--brass-dim), var(--brass));
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.progress-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.progress-inputs input {
+  width: 90px;
+  background: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  color: var(--paper);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.9rem;
+  padding: 7px 10px;
+  text-align: right;
+}
+
+.progress-inputs input:focus {
+  outline: none;
+  border-color: var(--brass);
+}
+
+.of-text {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--paper-dim);
+}
+
+.book-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* ---------- Reading: lists ---------- */
+
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.book-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 4px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.book-row:last-child {
+  border-bottom: none;
+}
+
+.book-row-info {
+  min-width: 0;
+}
+
+.book-row-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 0.98rem;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.book-row-meta {
+  color: var(--paper-dim);
+  font-size: 0.78rem;
+  margin: 2px 0 0;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.book-row-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  background: transparent;
+  border: 1px solid var(--hairline);
+  color: var(--paper-dim);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.74rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-btn:hover {
+  border-color: var(--brass);
+  color: var(--brass);
+}
+
+.icon-btn.danger:hover {
+  border-color: var(--gain);
+  color: var(--gain);
+}
+
+@media (max-width: 560px) {
+  .book-form input { flex: 1 1 100%; }
+  .book-row { flex-direction: column; align-items: flex-start; }
+  .book-row-actions { align-self: stretch; }
+}
