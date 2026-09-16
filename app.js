@@ -6,6 +6,7 @@ const totalEatenEl = document.getElementById('totalEaten');
 const totalBurnedEl = document.getElementById('totalBurned');
 const totalBalanceEl = document.getElementById('totalBalance');
 const avgWeightEl = document.getElementById('avgWeight');
+const trackedNoteEl = document.getElementById('trackedNote');
 const fatValueEl = document.getElementById('fatValue');
 const stampLabelEl = document.getElementById('stampLabel');
 const stampRingEl = document.getElementById('stamp').querySelector('.stamp-ring');
@@ -45,7 +46,7 @@ let currentMonday = new Date(thisWeekMonday);
 // ---------- State ----------
 
 function defaultState() {
-  return { days: DAYS.map(() => ({ eaten: '', burned: '', weight: '' })) };
+  return { days: DAYS.map(() => ({ eaten: '', burned: '', weight: '', skipped: false })) };
 }
 
 function loadState(monday) {
@@ -56,7 +57,7 @@ function loadState(monday) {
 
       // oldest format: bare array of {eaten, burned}
       if (Array.isArray(parsed)) {
-        return { days: parsed.map((d) => ({ eaten: d.eaten || '', burned: d.burned || '', weight: '' })) };
+        return { days: parsed.map((d) => ({ eaten: d.eaten || '', burned: d.burned || '', weight: '', skipped: false })) };
       }
 
       // previous format: { weight: <one weekly value>, days: [{eaten,burned}] }
@@ -64,9 +65,10 @@ function loadState(monday) {
         const days = parsed.days.map((d, i) => ({
           eaten: d.eaten || '',
           burned: d.burned || '',
-          weight: d.weight !== undefined && d.weight !== '' ? d.weight : (i === 4 && parsed.weight ? parsed.weight : '')
+          weight: d.weight !== undefined && d.weight !== '' ? d.weight : (i === 4 && parsed.weight ? parsed.weight : ''),
+          skipped: !!d.skipped
         }));
-        while (days.length < 5) days.push({ eaten: '', burned: '', weight: '' });
+        while (days.length < 5) days.push({ eaten: '', burned: '', weight: '', skipped: false });
         return { days };
       }
     }
@@ -125,29 +127,40 @@ function buildRows() {
     const date = new Date(currentMonday);
     date.setDate(date.getDate() + i);
 
+    const skipped = !!state.days[i].skipped;
+    const dis = skipped ? 'disabled' : '';
+
     const row = document.createElement('div');
-    row.className = 'row';
+    row.className = 'row' + (skipped ? ' row-skipped' : '');
     row.innerHTML = `
       <span class="col col-day day-name">
         ${day}
         <span class="full-date">${formatShort(date)}</span>
+        <label class="skip-toggle">
+          <input type="checkbox" class="skip-checkbox" data-index="${i}" ${skipped ? 'checked' : ''}>
+          Skip day
+        </label>
       </span>
       <span class="col col-num">
-        <input type="number" inputmode="numeric" min="0" placeholder="0" data-field="eaten" data-index="${i}" value="${state.days[i].eaten}">
+        <input type="number" inputmode="numeric" min="0" placeholder="0" data-field="eaten" data-index="${i}" value="${state.days[i].eaten}" ${dis}>
       </span>
       <span class="col col-num">
-        <input type="number" inputmode="numeric" min="0" placeholder="0" data-field="burned" data-index="${i}" value="${state.days[i].burned}">
+        <input type="number" inputmode="numeric" min="0" placeholder="0" data-field="burned" data-index="${i}" value="${state.days[i].burned}" ${dis}>
       </span>
       <span class="col col-num balance-cell" id="balance-${i}">0</span>
       <span class="col col-num">
-        <input type="number" inputmode="decimal" step="0.1" min="0" placeholder="&mdash;" data-field="weight" data-index="${i}" value="${state.days[i].weight}">
+        <input type="number" inputmode="decimal" step="0.1" min="0" placeholder="&mdash;" data-field="weight" data-index="${i}" value="${state.days[i].weight}" ${dis}>
       </span>
     `;
     ledgerBody.appendChild(row);
   });
 
-  ledgerBody.querySelectorAll('input').forEach((input) => {
+  ledgerBody.querySelectorAll('input[data-field]').forEach((input) => {
     input.addEventListener('input', onInputChange);
+  });
+
+  ledgerBody.querySelectorAll('.skip-checkbox').forEach((cb) => {
+    cb.addEventListener('change', onSkipToggle);
   });
 }
 
@@ -157,6 +170,15 @@ function onInputChange(e) {
   saveState();
   recalculate();
   if (field === 'weight') renderChart();
+}
+
+function onSkipToggle(e) {
+  const index = e.target.dataset.index;
+  state.days[index].skipped = e.target.checked;
+  saveState();
+  buildRows();
+  recalculate();
+  renderChart();
 }
 
 function classify(el, value) {
@@ -172,7 +194,10 @@ function formatSigned(n) {
 }
 
 function weekAverageWeight(days) {
-  const values = days.map((d) => parseFloat(d.weight)).filter((v) => !isNaN(v) && v > 0);
+  const values = days
+    .filter((d) => !d.skipped)
+    .map((d) => parseFloat(d.weight))
+    .filter((v) => !isNaN(v) && v > 0);
   if (values.length === 0) return null;
   return values.reduce((a, b) => a + b, 0) / values.length;
 }
@@ -180,16 +205,28 @@ function weekAverageWeight(days) {
 function recalculate() {
   let totalEaten = 0;
   let totalBurned = 0;
+  let trackedCount = 0;
 
   DAYS.forEach((_, i) => {
-    const eaten = parseFloat(state.days[i].eaten) || 0;
-    const burned = parseFloat(state.days[i].burned) || 0;
+    const day = state.days[i];
+    const balanceEl = document.getElementById(`balance-${i}`);
+
+    if (day.skipped) {
+      balanceEl.textContent = '\u2014';
+      balanceEl.classList.remove('pos', 'neg', 'zero');
+      balanceEl.classList.add('skipped');
+      return;
+    }
+
+    const eaten = parseFloat(day.eaten) || 0;
+    const burned = parseFloat(day.burned) || 0;
     const balance = eaten - burned;
 
     totalEaten += eaten;
     totalBurned += burned;
+    trackedCount++;
 
-    const balanceEl = document.getElementById(`balance-${i}`);
+    balanceEl.classList.remove('skipped');
     balanceEl.textContent = formatSigned(balance);
     classify(balanceEl, balance);
   });
@@ -200,6 +237,8 @@ function recalculate() {
   totalBurnedEl.textContent = totalBurned.toLocaleString();
   totalBalanceEl.textContent = formatSigned(totalBalance);
   classify(totalBalanceEl, totalBalance);
+
+  trackedNoteEl.textContent = trackedCount < 5 ? `(${trackedCount} of 5 days tracked)` : '';
 
   const avg = weekAverageWeight(state.days);
   avgWeightEl.textContent = avg === null ? '\u2014' : avg.toFixed(1);

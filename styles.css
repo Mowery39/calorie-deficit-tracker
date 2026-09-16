@@ -824,3 +824,49 @@ body {
     row-gap: 16px;
   }
 }
+
+/* ---------- Skip day ---------- */
+
+.row-skipped {
+  opacity: 0.55;
+}
+
+.skip-toggle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  color: var(--paper-dim);
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.skip-toggle input[type="checkbox"] {
+  accent-color: var(--brass);
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+}
+
+.row input:disabled {
+  color: var(--paper-dim);
+  cursor: not-allowed;
+}
+
+.balance-cell.skipped {
+  color: var(--paper-dim);
+  opacity: 0.7;
+}
+
+.tracked-note {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 0.66rem;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--paper-dim);
+  margin-top: 2px;
+}

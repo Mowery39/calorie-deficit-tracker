@@ -50,7 +50,10 @@
       </div>
 
       <div class="ledger-foot">
-        <span class="col col-day">Week total</span>
+        <span class="col col-day">
+          Week total
+          <span class="tracked-note" id="trackedNote"></span>
+        </span>
         <span class="col col-num" id="totalEaten">0</span>
         <span class="col col-num" id="totalBurned">0</span>
         <span class="col col-num balance" id="totalBalance">0</span>
@@ -71,6 +74,7 @@
         <p><strong>Balance</strong> = calories eaten &minus; calories burned, per day.</p>
         <p><strong>Estimated change</strong> = week's total balance &divide; 3500. A negative balance points toward fat lost; a positive one points toward fat gained.</p>
         <p><strong>Weight</strong> is logged daily and averaged across however many days you enter &mdash; daily numbers bounce around, the average doesn't.</p>
+      <p><strong>Skip day</strong> &mdash; check it for any day you didn't track. That day's eaten, burned, and weight are left out of every calculation, not counted as zero.</p>
         <button id="resetWeek" class="reset-btn" type="button">Clear this week</button>
       </div>
     </section>
