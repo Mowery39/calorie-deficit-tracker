@@ -8,7 +8,7 @@
 
   const PAGE_META = {
     calories: {
-      eyebrow: 'Personal Ledger \u2014 Weekdays Mon\u2013Fri',
+      eyebrow: 'Personal Ledger \u2014 Weekdays Tue\u2013Sat',
       title: 'Calorie Deficit',
       sub: "Enter what you ate, what you burned, and today's weight. The balance settles itself."
     },

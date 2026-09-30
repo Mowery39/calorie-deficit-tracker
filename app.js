@@ -1,4 +1,4 @@
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const DAYS = ['Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const STORAGE_PREFIX = 'calorie-ledger-';
 
 const ledgerBody = document.getElementById('ledgerBody');
@@ -19,11 +19,12 @@ const chartContainer = document.getElementById('chartContainer');
 
 // ---------- Date helpers ----------
 
-function getMonday(date) {
+function getWeekStart(date) {
+  // Week runs Tuesday - Saturday. Returns that week's Tuesday.
   const d = new Date(date);
-  const day = d.getDay(); // 0 = Sunday
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
+  const day = d.getDay(); // 0 = Sunday, 2 = Tuesday
+  const diff = (day + 5) % 7; // days since the most recent Tuesday
+  d.setDate(d.getDate() - diff);
   d.setHours(0, 0, 0, 0);
   return d;
 }
@@ -36,12 +37,12 @@ function isoDate(date) {
   return date.toISOString().slice(0, 10);
 }
 
-function keyFor(monday) {
-  return STORAGE_PREFIX + isoDate(monday);
+function keyFor(weekStart) {
+  return STORAGE_PREFIX + isoDate(weekStart);
 }
 
-const thisWeekMonday = getMonday(new Date());
-let currentMonday = new Date(thisWeekMonday);
+const thisWeekStart = getWeekStart(new Date());
+let currentWeekStart = new Date(thisWeekStart);
 
 // ---------- State ----------
 
@@ -49,9 +50,9 @@ function defaultState() {
   return { days: DAYS.map(() => ({ eaten: '', burned: '', weight: '', skipped: false })) };
 }
 
-function loadState(monday) {
+function loadState(weekStart) {
   try {
-    const raw = localStorage.getItem(keyFor(monday));
+    const raw = localStorage.getItem(keyFor(weekStart));
     if (raw) {
       const parsed = JSON.parse(raw);
 
@@ -76,46 +77,46 @@ function loadState(monday) {
   return defaultState();
 }
 
-let state = loadState(currentMonday);
+let state = loadState(currentWeekStart);
 
 function saveState() {
   try {
-    localStorage.setItem(keyFor(currentMonday), JSON.stringify(state));
+    localStorage.setItem(keyFor(currentWeekStart), JSON.stringify(state));
   } catch (e) { /* storage unavailable, fail silently */ }
 }
 
 // ---------- Week navigation ----------
 
 function renderWeekLabel() {
-  const friday = new Date(currentMonday);
-  friday.setDate(friday.getDate() + 4);
-  weekLabelEl.textContent = `Week of ${formatShort(currentMonday)} \u2013 ${formatShort(friday)}`;
+  const weekEnd = new Date(currentWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 4);
+  weekLabelEl.textContent = `Week of ${formatShort(currentWeekStart)} \u2013 ${formatShort(weekEnd)}`;
 
-  const atCurrent = isoDate(currentMonday) === isoDate(thisWeekMonday);
+  const atCurrent = isoDate(currentWeekStart) === isoDate(thisWeekStart);
   nextBtn.disabled = atCurrent;
   jumpTodayBtn.hidden = atCurrent;
 }
 
 function switchWeek() {
-  state = loadState(currentMonday);
+  state = loadState(currentWeekStart);
   renderWeekLabel();
   buildRows();
   recalculate();
 }
 
 prevBtn.addEventListener('click', () => {
-  currentMonday.setDate(currentMonday.getDate() - 7);
+  currentWeekStart.setDate(currentWeekStart.getDate() - 7);
   switchWeek();
 });
 
 nextBtn.addEventListener('click', () => {
-  if (isoDate(currentMonday) >= isoDate(thisWeekMonday)) return;
-  currentMonday.setDate(currentMonday.getDate() + 7);
+  if (isoDate(currentWeekStart) >= isoDate(thisWeekStart)) return;
+  currentWeekStart.setDate(currentWeekStart.getDate() + 7);
   switchWeek();
 });
 
 jumpTodayBtn.addEventListener('click', () => {
-  currentMonday = new Date(thisWeekMonday);
+  currentWeekStart = new Date(thisWeekStart);
   switchWeek();
 });
 
@@ -124,7 +125,7 @@ jumpTodayBtn.addEventListener('click', () => {
 function buildRows() {
   ledgerBody.innerHTML = '';
   DAYS.forEach((day, i) => {
-    const date = new Date(currentMonday);
+    const date = new Date(currentWeekStart);
     date.setDate(date.getDate() + i);
 
     const skipped = !!state.days[i].skipped;
